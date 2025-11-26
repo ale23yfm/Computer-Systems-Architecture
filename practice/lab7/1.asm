@@ -15,7 +15,7 @@ segment data use32 class=data
     n dd 0 
     message db "Ana has %d appels", 0
     input db "n= ", 0
-    format db '%d'
+    format db '%d', 0
 
 ; our code starts here
 segment code use32 class=code
