@@ -11,7 +11,7 @@ import exit msvcrt.dll    ; exit is a function that ends the calling process. It
 import printf msvcrt.dll
 import scanf msvcrt.dll
 
-extern read
+extern printing
 
 segment data use32 class=data
     message db "Enter the numbers: ", 0
@@ -35,7 +35,7 @@ start:
         
         push text
         
-        call read
+        call printing
 
         ; exit
         push dword 0
