@@ -11,11 +11,13 @@ import exit msvcrt.dll    ; exit is a function that ends the calling process. It
 import printf msvcrt.dll
 import scanf msvcrt.dll
 
-extern printing
+extern reading
 
 segment data use32 class=data
     message db "Enter the numbers: ", 0
-    format db "%[^", 10, "]", 0   ; 10 = '\n'
+    format_s db "%[^", 10, "]", 0   ; 10 = '\n'
+    number dd 0
+    format db "%d", 10, 13, 0
 
     text times 100 dd 0
 
@@ -25,18 +27,38 @@ start:
         ;printf(message)
         push dword message
         call [printf]
-        add esp, 4*1
+        add ESP, 4*1
         
-        ;scanf(text,format)
+        ;scanf(text,format_s)
         push dword text
-        push dword format
+        push dword format_s
         call [scanf]
-        add esp, 4*2
+        add ESP, 4*2
         
-        push text
+        mov ESI, text
         
-        call printing
+        push ESI
+        
+        call reading          
+            
+        pop ESI
+        
+        end_nr:
+            ;printf(format, number)
+            push dword [number] 
+            push dword format
+            call [printf]
+            add ESP, 4*2
+            
+            mov dword [number], 0
+            jmp reading
 
+        last_nr:
+            ;printf(format, number)
+                push dword [number] 
+                push dword format
+                call [printf]
+                add ESP, 4*2
         ; exit
         push dword 0
         call [exit]
