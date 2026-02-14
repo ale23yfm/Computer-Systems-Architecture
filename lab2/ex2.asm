@@ -15,6 +15,7 @@ segment  data use32 class=data ; segmentul de date in care se vor defini variabi
 segment  code use32 class=code ; segmentul de cod
 start: 
     ;Perform the calculations and analyze the results
+    ;a,b,c,d - byte
         ;c-(a+d)+(b+d)
             ;c
         mov AL, [c]
@@ -206,7 +207,7 @@ start:
         add BX, AX
         adc BH, 0
         
-        (d+d-b)+(c-a)
+        ;(d+d-b)+(c-a)
             ;d
         mov AL, [d]
         cbw
@@ -231,8 +232,86 @@ start:
         adc BH, 0
         
         ;(a+d+d)-c+(b+b)
-        ;(a+c-d) +d - (b+b-c)
+            ;a
+        mov AL, [a]
+        mov AH, 0
+            ;a+d
+        mov BL, [d]
+        mov BH, 0
+        add AX, BX
+            ;(a+d+d)
+        add AX, BX
+        mov BX, AX
+            ;c
+        mov AH, 0
+        mov AL, [c]
+            ;(a+d+d)-c
+        sub BX, AX
+            ;b
+        mov AH, 0
+        mov AL, [b]
+            ;b+b
+        add AX, [b]
+            ;(a+d+d)-c+(b+b)
+        add BX, AX
+        
+        ;(a+c-d)+d-(b+b-c)
+            ;a
+        mov AL, [a]
+        mov AH, 0
+            ;c
+        mov BL, [c]
+        mov BH, 0
+            ;a+c
+        add AX, BX
+            ;d
+        mov DL, [d]
+        mov DH, 0
+            ;(a+c-d)
+        sub AX, DX
+            ;(a+c-d)+d
+        add AX, DX
+        mov CX, AX
+            ;b
+        mov AL, [b]
+        mov AH, 0
+            ;b+b
+        add AX, AX
+            ;(b+b-c)
+        sub AX, BX
+            ;(a+c-d)+d-(b+b-c)
+        sub CX, AX
+        
         ;2-(c+d)+(a+b-c)
+            ;2
+        mov CL, 2
+        mov CH, 0
+            ;c
+        mov AL, [c]
+        mov AH, 0
+            ;d
+        mov BL, [d]
+        mov BH, 0
+            ;c+d
+        add AX, BX
+            ;2-(c+d)
+        sub CX, AX
+            ;a
+        mov AL, [a]
+        mov AH, 0
+            ;b
+        mov BL, [b]
+        mov BH, 0
+            ;a+b
+        add AX, BX
+            ;c
+        mov BL, [c]
+        mov BH, 0
+            ;a+b-c
+        sub AX, BX
+            ;2-(c+d)+(a+b-c)
+        add CX, AX
+        
         ;a+b-c+d-(a-d)
         ;(a+d-c)-(b+b)
         ;a-b-d+2+c+(10-b)
